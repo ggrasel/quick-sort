@@ -5,9 +5,29 @@ import { Button, Card, CardBody, Flex, NumberDecrementStepper, NumberIncrementSt
 
 function App() {
 
-  // async function logicaQuick([n1, n2, n3, n4]) {
-  //   console.log('logicaQuick');
-  // }
+  const quickSort = (arr: number[]): number[] => {
+    if (arr.length <= 1) {
+      return arr;
+    }
+
+    const pivot = arr[arr.length - 1];
+    const leftArray: number[] = [];
+    const rightArray: number[] = [];
+
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (arr[i] < pivot) {
+        leftArray.push(arr[i]);
+      } else {
+        rightArray.push(arr[i]);
+      }
+    }
+
+    console.log('leftArray', leftArray);
+    console.log('pivot', pivot);
+    console.log('rightArray', rightArray);
+
+    return [...quickSort(leftArray), pivot, ...quickSort(rightArray)];
+  };
 
   return (
 
@@ -52,7 +72,7 @@ function App() {
         <Button
         mt={5}
         onClick={() => {
-          logicaQuick()
+          //quickSort()
         }}>
           Teste Pai
         </Button>
