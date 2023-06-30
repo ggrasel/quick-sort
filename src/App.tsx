@@ -57,6 +57,7 @@ function App() {
       return;
     }
 
+    setShowArray(true);
     setOrderlyArray(quickSort([...values]));
   };
 
@@ -100,10 +101,10 @@ function App() {
         justify={'center'}
         minH={'100vh'}
       >
-        <Card>
+        <Card bgColor={'white'}>
           <CardBody>
             <Text
-              color={'purple.700'}
+              color={'purple.500'}
               fontWeight={'bold'}
               textAlign={'center'}
               fontSize={50}
@@ -155,8 +156,8 @@ function App() {
 
               <Button
                 mt={5}
+                colorScheme="purple"
                 onClick={() => {
-                  setShowArray(true);
                   clickOrdenation();
                 }}
               >
@@ -168,7 +169,14 @@ function App() {
                   <CardBody>
                     <HStack spacing={2}>
                       {orderlyArray.map((index) => (
-                        <Badge colorScheme="white">{index}</Badge>
+                        <Badge
+                          fontWeight={'bold'}
+                          fontSize={24}
+                          bgColor={'purple.500'}
+                          textColor={'white'}
+                        >
+                          {index}
+                        </Badge>
                       ))}
                     </HStack>
                   </CardBody>
