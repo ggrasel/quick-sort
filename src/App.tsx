@@ -71,7 +71,7 @@ function App() {
       </Flex> */}
 
         <VStack spacing={5}>
-          {[0, 1, 2, 3, 4].map((index) => (
+          {/* {[0, 1, 2, 3, 4].map((index) => (
             <Input
               key={index}
               value={values[index] || ''}
@@ -80,7 +80,45 @@ function App() {
               placeholder={`Valor ${index + 1}`}
               mr={2}
             />
-          ))}
+          ))} */}
+
+
+          <HStack spacing={5}>
+            <VStack spacing={2}>
+              {[0, 1, 2, 3, 4].map((index) => (
+                <NumberInput
+                  min={0} max={100}
+                  key={index}
+                  value={values[index] || ''}
+                  onChange={(valueString) => newValue(index, valueString)}
+                  placeholder={`Valor ${index + 1}`}
+                  mr={2}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              ))}
+            </VStack>
+            <VStack spacing={2}>
+            {[5, 6, 7, 8, 9].map((index) => (
+              <NumberInput
+                min={0} max={100}
+                key={index}
+                value={values[index] || ''}
+                onChange={(valueString) => newValue(index, valueString)}
+                placeholder={`Valor ${index + 1}`}
+                mr={2}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            ))}
+           </VStack>
+          </HStack>
 
           <Button
             mt={5}
