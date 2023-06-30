@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useForm } from 'react-hook-form';
 import { Box, Button, Card, CardBody, Text, Flex, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Badge, HStack } from '@chakra-ui/react';
 
 function App() {
+  // const { handleSubmit, control } = useForm<{ amountInputs: number }>({
+  //   shouldFocusError: true,
+  //   delayError: 500,
+  // });
+  // const [numInputs, setNumInputs] = useState<number>(0);
+
   const [values, setValues] = useState<number[]>([]);
   const [orderlyArray, setOrderlyArray] = useState<number[]>([]);
+  const [ showArray, setShowArray] = useState<boolean>(false);
+
 
   const clickOrdenation = () => {
     setOrderlyArray(quickSort([...values]));
@@ -46,6 +55,20 @@ function App() {
   <Flex align={'center'} justify={'center'} minH={'100vh'}>
     <Card alignItems={'center'} alignContent={'center'} >
       <CardBody>
+        
+      {/* <Text mb={4}>Digite a quantidade de inputs:</Text>
+      <Flex>
+        <Input
+          value={numInputs}
+          type="number"
+          onChange={handleInputChange}
+          placeholder="Quantidade de Inputs"
+          mr={2}
+        />
+        <Button onClick={
+          () => {setNumInputs(numInputs)}
+        }>Definir</Button>
+      </Flex> */}
 
         <VStack spacing={5}>
           {[0, 1, 2, 3, 4].map((index) => (
@@ -62,11 +85,13 @@ function App() {
           <Button
             mt={5}
             onClick={() => {
+              setShowArray(true)
               clickOrdenation()
             }}>
             Ordenar
           </Button>
 
+          {showArray && (
           <Card bgColor={'purple.500'}>
             <CardBody >
             <HStack spacing={2}>
@@ -76,14 +101,8 @@ function App() {
             </HStack>
             </CardBody>
           </Card>
+          )}
 
-          {/* <NumberInput name='n4' defaultValue={3} min={0} max={10}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput> */}
         </VStack>
       </CardBody>
     </Card>
