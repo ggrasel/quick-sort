@@ -30,6 +30,8 @@ function App() {
   const [showArray, setShowArray] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const [leftArrayChanges, setLeftArrayChanges] = useState<string>('');
+
   const validateInputs = () => {
     console.log('values', values);
     if (values.length === 0) {
@@ -61,10 +63,23 @@ function App() {
     setOrderlyArray(quickSort([...values]));
   };
 
+  const clearFields = () => {
+    setValues(Array(10).fill(0));
+    setOrderlyArray([]);
+    setShowArray(false);
+  };
+
   const newValue = (index: number, value: string) => {
-    const newValues = [...values];
-    newValues[index] = parseInt(value);
-    setValues(newValues);
+    const parsedValue = parseInt(value);
+    if (isNaN(parsedValue) || parsedValue === 0 || value === '') {
+      const newValues = [...values];
+      newValues[index] = 0;
+      setValues(newValues);
+    } else {
+      const newValues = [...values];
+      newValues[index] = parsedValue;
+      setValues(newValues);
+    }
   };
 
   const quickSort = (arr: number[]): number[] => {
@@ -83,6 +98,17 @@ function App() {
         } else {
           rightArray.push(arr[i]);
         }
+
+        setLeftArrayChanges(
+          (prevChanges) =>
+            prevChanges + JSON.stringify(i) + JSON.stringify(leftArray) + '\n'
+        );
+        setLeftArrayChanges(
+          (prevChanges) => prevChanges + JSON.stringify(pivot) + '\n'
+        );
+        setLeftArrayChanges(
+          (prevChanges) => prevChanges + JSON.stringify(rightArray) + '\n'
+        );
       }
     }
 
@@ -101,101 +127,112 @@ function App() {
         justify={'center'}
         minH={'100vh'}
       >
-        <Card bgColor={'white'}>
-          <CardBody>
-            <Text
-              color={'purple.500'}
-              fontWeight={'bold'}
-              textAlign={'center'}
-              fontSize={50}
-            >
-              Quick Sort
-            </Text>
-
-            <VStack spacing={5} mt={5}>
-              <HStack spacing={5}>
-                <VStack spacing={2}>
-                  {[0, 1, 2, 3, 4].map((index) => (
-                    <NumberInput
-                      min={1}
-                      max={100}
-                      key={index}
-                      value={values[index] || ''}
-                      onChange={(valueString) => newValue(index, valueString)}
-                      placeholder={`Valor ${index + 1}`}
-                      mr={2}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  ))}
-                </VStack>
-                <VStack spacing={2}>
-                  {[5, 6, 7, 8, 9].map((index) => (
-                    <NumberInput
-                      min={1}
-                      max={100}
-                      key={index}
-                      value={values[index] || ''}
-                      onChange={(valueString) => newValue(index, valueString)}
-                      placeholder={`Valor ${index + 1}`}
-                      mr={2}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  ))}
-                </VStack>
-              </HStack>
-
-              <Button
-                mt={5}
-                colorScheme="purple"
-                onClick={() => {
-                  clickOrdenation();
-                }}
+        <VStack>
+          <Card bgColor={'white'}>
+            <CardBody>
+              <Text
+                color={'purple.500'}
+                fontWeight={'bold'}
+                textAlign={'center'}
+                fontSize={50}
               >
-                Ordenar
-              </Button>
+                Quick Sort
+              </Text>
 
-              {showArray && (
-                <Card bgColor={'purple.500'}>
-                  <CardBody>
-                    <HStack spacing={2}>
-                      {orderlyArray.map((index) => (
-                        <Badge
-                          fontWeight={'bold'}
-                          fontSize={24}
-                          bgColor={'purple.500'}
-                          textColor={'white'}
-                        >
-                          {index}
-                        </Badge>
-                      ))}
-                    </HStack>
-                  </CardBody>
-                </Card>
-              )}
-            </VStack>
-          </CardBody>
-        </Card>
-      </Flex>
+              <VStack spacing={5} mt={5}>
+                <HStack spacing={5}>
+                  <VStack spacing={2}>
+                    {[0, 1, 2, 3, 4].map((index) => (
+                      <NumberInput
+                        min={1}
+                        max={100}
+                        key={index}
+                        value={values[index] || ''}
+                        onChange={(valueString) => newValue(index, valueString)}
+                        placeholder={`Valor ${index + 1}`}
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    ))}
+                    <Button
+                      w={'full'}
+                      mt={5}
+                      colorScheme="gray"
+                      onClick={() => {
+                        clearFields();
+                      }}
+                    >
+                      Limpar
+                    </Button>
+                  </VStack>
+                  <VStack spacing={2}>
+                    {[5, 6, 7, 8, 9].map((index) => (
+                      <NumberInput
+                        min={1}
+                        max={100}
+                        key={index}
+                        value={values[index] || ''}
+                        onChange={(valueString) => newValue(index, valueString)}
+                        placeholder={`Valor ${index + 1}`}
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    ))}
+                    <Button
+                      w={'full'}
+                      mt={5}
+                      colorScheme="purple"
+                      onClick={() => {
+                        clickOrdenation();
+                      }}
+                    >
+                      Ordenar
+                    </Button>
+                  </VStack>
+                </HStack>
 
-      <Flex bgColor={'gray.800'} justify={'center'}>
-        <Link
-          bgColor={'gray.800'}
-          textColor={'white'}
-          href="https://github.com/ggrasel/quick-sort"
-          isExternal
-        >
-          Acesse o repositório <ExternalLinkIcon mb={1} />
-        </Link>
+                <HStack w={'full'} spacing={7}></HStack>
+
+                {showArray && (
+                  <Card bgColor={'purple.500'}>
+                    <CardBody>
+                      <HStack spacing={2}>
+                        {orderlyArray.map((index) => (
+                          <Badge
+                            fontWeight={'bold'}
+                            fontSize={24}
+                            bgColor={'purple.500'}
+                            textColor={'white'}
+                          >
+                            {index}
+                          </Badge>
+                        ))}
+                      </HStack>
+                    </CardBody>
+                  </Card>
+                )}
+              </VStack>
+            </CardBody>
+          </Card>
+
+          <Link
+            mt={5}
+            bgColor={'gray.800'}
+            textColor={'white'}
+            href="https://github.com/ggrasel/quick-sort"
+            isExternal
+          >
+            Acesse o repositório <ExternalLinkIcon mb={1} />
+          </Link>
+        </VStack>
       </Flex>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
