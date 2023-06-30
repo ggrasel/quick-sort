@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button, Card, CardBody, Flex, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack } from '@chakra-ui/react';
 
 function App() {
+  const [values, setValues] = useState<number[]>([]);
+  const [sortedValues, setSortedValues] = useState<number[]>([]);
+
+  const handleSortClick = () => {
+    const sortedArray = quickSort([...values]);
+    setSortedValues(sortedArray);
+  };
 
   const quickSort = (arr: number[]): number[] => {
     if (arr.length <= 1) {
@@ -36,6 +43,7 @@ function App() {
       <CardBody>
 
     <VStack spacing={5}>
+      
       <NumberInput name='n1' defaultValue={2} min={0} max={10}>
         <NumberInputField />
         <NumberInputStepper>
