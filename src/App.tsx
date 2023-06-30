@@ -1,22 +1,62 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  HStack,
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { useState } from 'react';
 import './App.css';
-import { useForm } from 'react-hook-form';
-import { Box, Button, Card, CardBody, Text, Flex, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Badge, HStack } from '@chakra-ui/react';
 
 function App() {
-  // const { handleSubmit, control } = useForm<{ amountInputs: number }>({
-  //   shouldFocusError: true,
-  //   delayError: 500,
-  // });
-  // const [numInputs, setNumInputs] = useState<number>(0);
-
   const [values, setValues] = useState<number[]>([]);
   const [orderlyArray, setOrderlyArray] = useState<number[]>([]);
-  const [ showArray, setShowArray] = useState<boolean>(false);
+  const [showArray, setShowArray] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const validateInputs = () => {
+    console.log('values', values);
+    if (values.length === 0) {
+      return true;
+    }
+
+    if (
+      (values.length === 1 && isNaN(values[0])) ||
+      (values.length === 1 && values[0] === 0)
+    ) {
+      return true;
+    }
+
+    for (let i = 0; i < values.length; i++) {
+      if (values[i] > 0 && values[i] <= 100) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   const clickOrdenation = () => {
+    if (validateInputs()) {
+      setIsModalOpen(true);
+      return;
+    }
+
     setOrderlyArray(quickSort([...values]));
   };
 
@@ -36,10 +76,12 @@ function App() {
     const rightArray: number[] = [];
 
     for (let i = 0; i < arr.length - 1; i++) {
-      if (arr[i] < pivot) {
-        leftArray.push(arr[i]);
-      } else {
-        rightArray.push(arr[i]);
+      if (!isNaN(arr[i]) && arr[i] > 0 && arr[i] <= 100) {
+        if (arr[i] < pivot) {
+          leftArray.push(arr[i]);
+        } else {
+          rightArray.push(arr[i]);
+        }
       }
     }
 
@@ -51,100 +93,118 @@ function App() {
   };
 
   return (
+    <>
+      <Flex
+        bgColor={'gray.800'}
+        align={'center'}
+        justify={'center'}
+        minH={'100vh'}
+      >
+        <Card>
+          <CardBody>
+            <Text
+              color={'purple.700'}
+              fontWeight={'bold'}
+              textAlign={'center'}
+              fontSize={50}
+            >
+              Quick Sort
+            </Text>
 
-  <Flex align={'center'} justify={'center'} minH={'100vh'}>
-    <Card alignItems={'center'} alignContent={'center'} >
-      <CardBody>
-        
-      {/* <Text mb={4}>Digite a quantidade de inputs:</Text>
-      <Flex>
-        <Input
-          value={numInputs}
-          type="number"
-          onChange={handleInputChange}
-          placeholder="Quantidade de Inputs"
-          mr={2}
-        />
-        <Button onClick={
-          () => {setNumInputs(numInputs)}
-        }>Definir</Button>
-      </Flex> */}
+            <VStack spacing={5} mt={5}>
+              <HStack spacing={5}>
+                <VStack spacing={2}>
+                  {[0, 1, 2, 3, 4].map((index) => (
+                    <NumberInput
+                      min={1}
+                      max={100}
+                      key={index}
+                      value={values[index] || ''}
+                      onChange={(valueString) => newValue(index, valueString)}
+                      placeholder={`Valor ${index + 1}`}
+                      mr={2}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  ))}
+                </VStack>
+                <VStack spacing={2}>
+                  {[5, 6, 7, 8, 9].map((index) => (
+                    <NumberInput
+                      min={1}
+                      max={100}
+                      key={index}
+                      value={values[index] || ''}
+                      onChange={(valueString) => newValue(index, valueString)}
+                      placeholder={`Valor ${index + 1}`}
+                      mr={2}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  ))}
+                </VStack>
+              </HStack>
 
-        <VStack spacing={5}>
-          {/* {[0, 1, 2, 3, 4].map((index) => (
-            <Input
-              key={index}
-              value={values[index] || ''}
-              onChange={(e) => newValue(index, e.target.value)}
-              type="number"
-              placeholder={`Valor ${index + 1}`}
-              mr={2}
-            />
-          ))} */}
+              <Button
+                mt={5}
+                onClick={() => {
+                  setShowArray(true);
+                  clickOrdenation();
+                }}
+              >
+                Ordenar
+              </Button>
 
-
-          <HStack spacing={5}>
-            <VStack spacing={2}>
-              {[0, 1, 2, 3, 4].map((index) => (
-                <NumberInput
-                  min={0} max={100}
-                  key={index}
-                  value={values[index] || ''}
-                  onChange={(valueString) => newValue(index, valueString)}
-                  placeholder={`Valor ${index + 1}`}
-                  mr={2}>
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              ))}
+              {showArray && (
+                <Card bgColor={'purple.500'}>
+                  <CardBody>
+                    <HStack spacing={2}>
+                      {orderlyArray.map((index) => (
+                        <Badge colorScheme="white">{index}</Badge>
+                      ))}
+                    </HStack>
+                  </CardBody>
+                </Card>
+              )}
             </VStack>
-            <VStack spacing={2}>
-            {[5, 6, 7, 8, 9].map((index) => (
-              <NumberInput
-                min={0} max={100}
-                key={index}
-                value={values[index] || ''}
-                onChange={(valueString) => newValue(index, valueString)}
-                placeholder={`Valor ${index + 1}`}
-                mr={2}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            ))}
-           </VStack>
-          </HStack>
+          </CardBody>
+        </Card>
+      </Flex>
 
-          <Button
-            mt={5}
-            onClick={() => {
-              setShowArray(true)
-              clickOrdenation()
-            }}>
-            Ordenar
-          </Button>
+      <Flex bgColor={'gray.800'} justify={'center'}>
+        <Link
+          bgColor={'gray.800'}
+          textColor={'white'}
+          href="https://github.com/ggrasel/quick-sort"
+          isExternal
+        >
+          Acesse o repositório <ExternalLinkIcon mb={1} />
+        </Link>
+      </Flex>
 
-          {showArray && (
-          <Card bgColor={'purple.500'}>
-            <CardBody >
-            <HStack spacing={2}>
-              {orderlyArray.map((index) => (
-                <Badge colorScheme='white'>{index}</Badge>
-              ))}
-            </HStack>
-            </CardBody>
-          </Card>
-          )}
-
-        </VStack>
-      </CardBody>
-    </Card>
-  </Flex>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Erro</ModalHeader>
+          <ModalBody>
+            <Text>Por favor, preencha ao menos um valor.</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={() => setIsModalOpen(false)}>
+              Fechar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
 
