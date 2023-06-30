@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Button, Card, CardBody, Flex, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, Text, Flex, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack } from '@chakra-ui/react';
 
 function App() {
   const [values, setValues] = useState<number[]>([]);
-  const [sortedValues, setSortedValues] = useState<number[]>([]);
+  const [orderlyArray, setOrderlyArray] = useState<number[]>([]);
 
-  const handleSortClick = () => {
-    const sortedArray = quickSort([...values]);
-    setSortedValues(sortedArray);
+  const clickOrdenation = () => {
+    setOrderlyArray(quickSort([...values]));
+  };
+
+  const newValue = (index: number, value: string) => {
+    const newValues = [...values];
+    newValues[index] = parseInt(value);
+    setValues(newValues);
   };
 
   const quickSort = (arr: number[]): number[] => {
@@ -44,6 +49,23 @@ function App() {
 
     <VStack spacing={5}>
       
+
+    {[0, 1, 2, 3, 4].map((index) => (
+      <Input
+        key={index}
+        value={values[index] || ''}
+        onChange={(e) => newValue(index, e.target.value)}
+        type="number"
+        placeholder={`Valor ${index + 1}`}
+        mr={2}
+      />
+    ))}
+
+    <Box mt={4}>
+      <Text>Valores ordenados:</Text>
+      <Text>{orderlyArray.join(', ')}</Text>
+    </Box>
+
       <NumberInput name='n1' defaultValue={2} min={0} max={10}>
         <NumberInputField />
         <NumberInputStepper>
@@ -78,10 +100,10 @@ function App() {
       </VStack>
 
         <Button
-        mt={5}
-        onClick={() => {
-          //quickSort()
-        }}>
+          mt={5}
+          onClick={() => {
+            clickOrdenation()
+          }}>
           Teste Pai
         </Button>
 
