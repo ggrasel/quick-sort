@@ -29,8 +29,7 @@ function App() {
   const [orderlyArray, setOrderlyArray] = useState<number[]>([]);
   const [showArray, setShowArray] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const [leftArrayChanges, setLeftArrayChanges] = useState<string>('');
+  // const [arrayChanges, setArrayChanges] = useState<string>('');
 
   const validateInputs = () => {
     console.log('values', values);
@@ -67,6 +66,7 @@ function App() {
     setValues(Array(10).fill(0));
     setOrderlyArray([]);
     setShowArray(false);
+    // setArrayChanges('');
   };
 
   const newValue = (index: number, value: string) => {
@@ -99,16 +99,21 @@ function App() {
           rightArray.push(arr[i]);
         }
 
-        setLeftArrayChanges(
-          (prevChanges) =>
-            prevChanges + JSON.stringify(i) + JSON.stringify(leftArray) + '\n'
-        );
-        setLeftArrayChanges(
-          (prevChanges) => prevChanges + JSON.stringify(pivot) + '\n'
-        );
-        setLeftArrayChanges(
-          (prevChanges) => prevChanges + JSON.stringify(rightArray) + '\n'
-        );
+        // setArrayChanges(
+        //   (prevChanges) => prevChanges + 'Chamada ' + JSON.stringify(i) + '<br>'
+        // );
+        // setArrayChanges(
+        //   (prevChanges) =>
+        //     prevChanges + 'Esq = ' + JSON.stringify(leftArray) + '<br>'
+        // );
+        // setArrayChanges(
+        //   (prevChanges) =>
+        //     prevChanges + 'Pivo = ' + JSON.stringify(pivot) + '<br>'
+        // );
+        // setArrayChanges(
+        //   (prevChanges) =>
+        //     prevChanges + 'Dir = ' + JSON.stringify(rightArray) + '<br>'
+        // );
       }
     }
 
@@ -116,7 +121,14 @@ function App() {
     console.log('pivot', pivot);
     console.log('rightArray', rightArray);
 
-    return [...quickSort(leftArray), pivot, ...quickSort(rightArray)];
+    const finalArray = [
+      ...quickSort(leftArray),
+      pivot,
+      ...quickSort(rightArray),
+    ];
+    const finalArray2 = finalArray.filter((valor) => valor !== 0);
+
+    return finalArray2;
   };
 
   return (
@@ -191,6 +203,7 @@ function App() {
                       mt={5}
                       colorScheme="purple"
                       onClick={() => {
+                        // setArrayChanges('');
                         clickOrdenation();
                       }}
                     >
