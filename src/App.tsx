@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Box, Button, Card, CardBody, Text, Flex, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, Text, Flex, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Badge, HStack } from '@chakra-ui/react';
 
 function App() {
   const [values, setValues] = useState<number[]>([]);
@@ -47,70 +47,47 @@ function App() {
     <Card alignItems={'center'} alignContent={'center'} >
       <CardBody>
 
-    <VStack spacing={5}>
-      
+        <VStack spacing={5}>
+          {[0, 1, 2, 3, 4].map((index) => (
+            <Input
+              key={index}
+              value={values[index] || ''}
+              onChange={(e) => newValue(index, e.target.value)}
+              type="number"
+              placeholder={`Valor ${index + 1}`}
+              mr={2}
+            />
+          ))}
 
-    {[0, 1, 2, 3, 4].map((index) => (
-      <Input
-        key={index}
-        value={values[index] || ''}
-        onChange={(e) => newValue(index, e.target.value)}
-        type="number"
-        placeholder={`Valor ${index + 1}`}
-        mr={2}
-      />
-    ))}
+          <Button
+            mt={5}
+            onClick={() => {
+              clickOrdenation()
+            }}>
+            Ordenar
+          </Button>
 
-    <Box mt={4}>
-      <Text>Valores ordenados:</Text>
-      <Text>{orderlyArray.join(', ')}</Text>
-    </Box>
+          <Card bgColor={'purple.500'}>
+            <CardBody >
+            <HStack spacing={2}>
+              {orderlyArray.map((index) => (
+                <Badge colorScheme='white'>{index}</Badge>
+              ))}
+            </HStack>
+            </CardBody>
+          </Card>
 
-      <NumberInput name='n1' defaultValue={2} min={0} max={10}>
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-
-      <NumberInput name='n2' defaultValue={1} min={0} max={10}>
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-
-      <NumberInput name='n3' defaultValue={4} min={0} max={10}>
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-
-      <NumberInput name='n4' defaultValue={3} min={0} max={10}>
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-      </VStack>
-
-        <Button
-          mt={5}
-          onClick={() => {
-            clickOrdenation()
-          }}>
-          Teste Pai
-        </Button>
-
+          {/* <NumberInput name='n4' defaultValue={3} min={0} max={10}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput> */}
+        </VStack>
       </CardBody>
     </Card>
   </Flex>
-    
   );
 }
 
